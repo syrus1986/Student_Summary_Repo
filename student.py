@@ -32,7 +32,19 @@ print(education_category)
 attendance_rate=data.groupby("Gender")['Attendance'].value_counts(normalize=True)*100
 print(attendance_rate)
 
+#gender sorted by exam score
 data_sorted = data.sort_values(by=['Gender', 'Exam_Score'], ascending=[True, False])
 print(data_sorted)
 
 data.to_excel('student_summary.xlsx',index=False)
+
+# Export all summaries into one Excel file
+with pd.ExcelWriter("student_summary_report.xlsx") as writer:
+    gender_counts.to_excel(writer, sheet_name="1_Gender_Count")
+    gender_counts.to_excel(writer, sheet_name="2_Group_Size")
+    gender_percent.to_excel(writer, sheet_name="3_Percentage")
+    performance_score.to_excel(writer, sheet_name="4_Performance_Score")
+    education_category.to_excel(writer, sheet_name="5_Education_Level")
+    attendance_rate.to_excel(writer, sheet_name="6_Attendance_Rate")
+    data_sorted.to_excel(writer, sheet_name="7_Sorted_Scores", index=False)
+    print("✅ Report exported to student_summary_report.xlsx")
